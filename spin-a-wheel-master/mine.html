@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mining Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            margin: 0;
+        }
+        
+        .container {
+            width: 100%;
+            text-align: center;
+            background-image: linear-gradient(to right, black, rgb(33, 31, 31), rgb(91, 88, 88));
+            ;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            bottom: 230px;
+            border: 3px solid rgba(255, 191, 0, 0.749);
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .startmine {
+            background-image: linear-gradient(to right, rgb(133, 71, 0), rgb(250, 171, 0), rgb(255, 250, 234), rgb(253, 200, 121));
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            border: 7px solid rgba(0, 0, 236, 0.363);
+            position: relative;
+            top: 320px;
+            left: 80px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+        }
+        
+        .stopmine {
+            background-image: linear-gradient(to right, black, rgb(33, 31, 31), rgb(91, 88, 88));
+            ;
+            color: linear-gradient(to right, black, rgb(33, 31, 31), rgb(91, 88, 88));
+            ;
+            border: none;
+            position: relative;
+            bottom: 500px;
+        }
+        
+        #status,
+        #countdown,
+        #mined {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        /* Modal styles */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 40%;
+            height: 40%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.598);
+        }
+        
+        .modal-content {
+            background-color: rgba(0, 0, 0, 0.769);
+            color: rgb(231, 220, 220);
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+            background-image: linear-gradient(to right, rgb(133, 71, 0), rgb(250, 171, 0), rgb(255, 250, 234), rgb(253, 200, 121));
+        }
+        
+        .timing {
+            position: relative;
+            bottom: 230px;
+            border: 3px solid rgba(255, 191, 0, 0.749);
+        }
+        
+        .time {
+            color: rgb(237, 235, 235);
+        }
+        
+        .bal {
+            color: #aaa;
+        }
+        
+        @import url('https://fonts.googleapis.com/css?family=Orbitron');
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        html,
+        body {
+            display: grid;
+            place-items: center;
+        }
+        
+        #dayIntro {
+            font-size: 40px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            border: 7px solid rgb(17, 129, 134);
+            border-radius: 10px;
+            margin: 20px;
+            font-family: 'Times New Roman', Times, serif;
+            padding: 15px;
+            background: linear-gradient(180deg, #a8b9d3, rgb(173, 227, 229));
+        }
+        
+        .excontainer {
+            height: 120px;
+            width: 550px;
+            position: relative;
+            background: linear-gradient(135deg, #14ffe9, #ffeb3b, #ff00e0);
+            border-radius: 10px;
+            cursor: default;
+        }
+        
+        .excontainer .dispClock,
+        .excontainer {
+            position: absolute;
+            top: 9%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .excontainer .dispClock {
+            top: 50%;
+            height: 105px;
+            width: 535px;
+            background: linear-gradient(147deg, #000000 0%, #2c3e50 74%);
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .dispClock #time {
+            line-height: 85px;
+            color: #fff;
+            font-size: 50px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #14ffe9, #ffeb3b, #ff00e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .mined {
+            background-color: #333;
+            color: #fff;
+            position: relative;
+            bottom: 240px;
+            height: 50px;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .balance {
+            position: relative;
+            top: 160px;
+            color: white !important;
+            background-color: #000000;
+            width: 100%;
+            height: 70px;
+            font-size: 25px;
+        }
+        
+        .claim-button {
+            background-image: linear-gradient(to right, rgb(133, 71, 0), rgb(250, 171, 0), rgb(255, 250, 234), rgb(253, 200, 121));
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 20px;
+        }
+        
+        .transfer {
+            position: relative;
+            top: 130px;
+        }
+        
+        .info {
+            background-color: rgb(197, 184, 184);
+            color: black;
+            text-shadow: 2px 2px 5px white;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            display: flex;
+            float: right;
+            position: relative;
+            top: 180px;
+        }
+        
+        .info1 {
+            margin: 10px;
+            padding: 20px;
+            background-color: rgb(160, 149, 149);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="balance">
+            <h2 class="bal"> <span class="vc"><sup>Vc Balance:</sup> </span></Vc><span id="balance">0</span> coins</h2>
+        </div>
+        <button id="startButton" class="startmine">Start Mining</button>
+        <button id="stopButton" disabled class="stopmine">Stop Mining</button>
+        <p id="status" style="color: #f0eaea; font-family: 'Times New Roman', Times, serif;">Mining Status: Stopped</p>
+        <p id="mined" class="mined" style="color: white; font-size: 30px;"><sub style="font-size: 20px; background: linear-gradient(135deg, #14ffe9, #ffeb3b, #ff00e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;">MinedCoins</sub> <span id="minedCoins">0</span> coins</p>
+    </div>
+
+
+    <div class="excontainer">
+        <!-- Display time -->
+        <div class="dispClock">
+            <div id="countdown" style="background: linear-gradient(135deg, #14ffe9, #ffeb3b, #ff00e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; font-size: 50px;  font-family: 'Orbitron', sans-serif; letter-spacing: 1px;  font-weight: 600;"><span id="time" style="background: linear-gradient(135deg, #14ffe9, #ffeb3b, #ff00e0);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;">03:00:00</span></div>
+        </div>
+    </div>
+
+    <!-- <p class="timing" style="color: rgb(201, 201, 186); font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; width: 200px; height: 50px; border-radius: 0 0 20px 20px;"><span class="time" style="color: rgb(221, 221, 221);">00:</span><span style="color: rgb(216, 216, 199);">01:</span><span style="color: rgb(215, 215, 201);">00</span></p> -->
+
+    <!-- Modal -->
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>You have mined for 3 hrs. claim your coins.</p>
+            <button class="claim-button"> Claim Coins</button>
+        </div>
+    </div>
+
+    <button class="transfer" id="transferButton" disabled>Transfer Mined Coins</button>
+
+
+    <div class="info">
+        <a href="tap.html">
+            <div class="info1"> Tap</div>
+        </a>
+        <a href="task.html">
+            <div class="info1"> Task</div>
+        </a>
+        <a href="gang.html">
+            <div class="info1"> Gang</div>
+        </a>
+        <a href="mine.html">
+            <div class="info1">Mine</div>
+        </a>
+
+        <div class="info1">Frends</div>
+    </div>
+
+    <script>
+        const balanceElement = document.getElementById('balance');
+        const minedCoinsElement = document.getElementById('minedCoins');
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const statusElement = document.getElementById('status');
+        const countdownElement = document.getElementById('countdown');
+        const transferButton = document.getElementById('transferButton');
+        const modal = document.getElementById('modal');
+        const closeModal = document.querySelector('.close');
+        const claimButton = document.getElementById('claimButton');
+
+        let balance = 0;
+        let miningActive = false;
+        let miningInterval;
+        let miningStartTime;
+        let minedCoins = 0;
+
+        const miningRate = 10; // Coins per second (increased for faster mining)
+        const updateInterval = 100; // Update every 100 milliseconds for faster feedback
+        const maxMiningTime = 3 * 60 * 60 * 1000; // 3 hours in milliseconds
+
+
+        function startMining() {
+            if (!miningActive) {
+                miningActive = true;
+                miningStartTime = Date.now();
+                statusElement.textContent = 'Mining Status: Active';
+                stopButton.disabled = false;
+
+                miningInterval = setInterval(() => {
+                    const elapsedTime = Date.now() - miningStartTime;
+                    const remainingTime = maxMiningTime - elapsedTime;
+
+                    if (remainingTime <= 0) {
+                        showModal();
+                        stopMining();
+                    } else {
+                        updateCountdown(remainingTime);
+                        minedCoins += miningRate * (updateInterval / 1000);
+                        minedCoinsElement.textContent = Math.floor(minedCoins);
+                    }
+                }, updateInterval);
+            }
+        }
+
+        function stopMining() {
+            if (miningActive) {
+                miningActive = false;
+                clearInterval(miningInterval);
+                statusElement.textContent = 'Mining Status: Stopped';
+                stopButton.disabled = true;
+            }
+        }
+
+        function updateCountdown(remainingTime) {
+            const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+            const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+            countdownElement.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function showModal() {
+            modal.style.display = 'block';
+        }
+
+        function closeModalAction() {
+            modal.style.display = 'none';
+            claimCoins();
+        }
+
+        function claimCoins() {
+            balance += Math.floor(minedCoins);
+            balanceElement.textContent = balance;
+            minedCoins = 0;
+            minedCoinsElement.textContent = minedCoins;
+            transferButton.disabled = false;
+        }
+
+        function transferCoins() {
+            localStorage.setItem('balance', balance);
+            alert('Coins transferred to the balance page!');
+        }
+
+        startButton.addEventListener('click', startMining);
+        stopButton.addEventListener('click', stopMining);
+        closeModal.addEventListener('click', closeModalAction);
+        claimButton.addEventListener('click', closeModalAction);
+        transferButton.addEventListener('click', transferCoins);
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModalAction();
+            }
+        };
+    </script>
+</body>
+
+</html>

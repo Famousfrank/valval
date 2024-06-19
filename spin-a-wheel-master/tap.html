@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        @media (max-width: 430px) {
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 600px;
+                margin: 50px auto;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            h1 {
+                text-align: center;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            label {
+                margin-bottom: 10px;
+            }
+            input[type="text"] {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            button {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            #username-display {
+                text-align: center;
+                font-size: 20px;
+                margin-top: 20px;
+            }
+            .wrapper {
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                background-color: #637dd1;
+            }
+            .card {
+                width: 100% !important;
+                background-color: #001334;
+                color: #fff;
+                position: relative;
+                bottom: 195px;
+                z-index: 1;
+                height: 350px;
+            }
+            /* .about {
+                padding: 10px;
+                color: #fff;
+            } */
+            .about small {
+                font-size: 10px;
+            }
+            hr {
+                color: #fff;
+                margin-top: 0px;
+            }
+            .steam {
+                margin-top: -5px;
+            }
+            .seller {
+                margin-top: -6px;
+                font-size: 14px;
+            }
+            .steam-price {
+                margin-right: 115px !important;
+            }
+            .margin {
+                margin-top: -6px;
+                color: #6c757d !important;
+                font-size: 13px;
+            }
+            .response div {
+                margin-right: 10px;
+            }
+            .fa-check-circle {
+                color: #1775e5;
+            }
+            .fa-thumbs-up {
+                color: #79d254;
+            }
+            .fa-thumbs-down {
+                color: #e05a59;
+            }
+            .cart {
+                height: 50px;
+            }
+        }
+        
+        .tap {
+            position: relative;
+            top: 10px;
+            left: 90px;
+        }
+        
+        .back {
+            width: 460px;
+            height: 500px;
+            position: relative;
+            bottom: 180px;
+            right: 20px;
+            z-index: -1;
+            opacity: 0.6;
+        }
+        
+        .time {
+            background-color: black;
+            position: relative;
+            bottom: 35px;
+            left: 200px;
+            color: #ccc;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        
+        .left {
+            position: relative;
+            top: 20px;
+            background-color: burlywood;
+            border-radius: 30px 0 30px 0;
+            text-align: center;
+            border: 3px solid #104fbc;
+            color: #001334;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 20px;
+            font-weight: 400px;
+            width: 200px;
+            position: relative;
+            left: 210px;
+        }
+        
+        .coin {
+            position: absolute;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background-color: gold;
+            border-radius: 50%;
+            animation: drop 1s ease-in-out forwards;
+        }
+        
+        @keyframes drop {
+            0% {
+                transform: translateY(-50px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+        }
+        
+        .plus-ten {
+            position: absolute;
+            color: rgb(44, 255, 44);
+            font-size: 30px;
+            animation: rise 1s ease-in-out forwards;
+        }
+        
+        @keyframes rise {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+        
+        .golden-text {
+            color: #FFD700;
+            /* This is the hex color code for gold */
+        }
+        
+        #tap-image {
+            width: 200px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
+            /* Removes the tap color overlay on mobile */
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+            animation-iteration-count: 1;
+        }
+        
+        @keyframes shake {
+            0% {
+                transform: translate(1px, 1px) rotate(0deg);
+            }
+            10% {
+                transform: translate(-1px, -2px) rotate(-1deg);
+            }
+            20% {
+                transform: translate(-3px, 0px) rotate(1deg);
+            }
+            30% {
+                transform: translate(3px, 2px) rotate(0deg);
+            }
+            40% {
+                transform: translate(1px, -1px) rotate(1deg);
+            }
+            50% {
+                transform: translate(-1px, 2px) rotate(-1deg);
+            }
+            60% {
+                transform: translate(-3px, 1px) rotate(0deg);
+            }
+            70% {
+                transform: translate(3px, 1px) rotate(-1deg);
+            }
+            80% {
+                transform: translate(-1px, -1px) rotate(1deg);
+            }
+            90% {
+                transform: translate(1px, 2px) rotate(0deg);
+            }
+            100% {
+                transform: translate(1px, -2px) rotate(-1deg);
+            }
+        }
+        
+        .level {
+            position: relative;
+            left: 200px;
+            font-size: 20px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            color: #a76200;
+        }
+        
+        .info {
+            background-color: rgb(197, 184, 184);
+            color: black;
+            text-shadow: 2px 2px 5px white;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            display: flex;
+            float: right;
+            position: relative;
+            bottom: 100px;
+        }
+        
+        .info1 {
+            margin: 10px;
+            padding: 20px;
+        }
+        
+        .upgrade {
+            position: relative;
+            bottom: 180px;
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .buttonup {
+            position: relative;
+            left: 10px;
+        }
+        
+        .buttonup:hover {
+            opacity: 0.8;
+        }
+        
+        .upgrade1 {
+            position: relative;
+            bottom: 180px;
+        }
+        
+        .cancelbtn {
+            width: auto;
+            padding: 10px 18px;
+            background-color: #f44336;
+        }
+        /* Center the image and position the close button */
+        
+        .imgcontainerup {
+            text-align: center;
+            margin: 24px 0 12px 0;
+            position: relative;
+        }
+        
+        img.avatar {
+            width: 50%;
+            border-radius: 10%;
+        }
+        
+        .containerup {
+            padding: 16px;
+        }
+        
+        span.psw {
+            float: right;
+            padding-top: 16px;
+        }
+        /* The Modal (background) */
+        
+        .modalup {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+            padding-top: 60px;
+        }
+        /* Modal Content/Box */
+        
+        .modalup-content {
+            background-color: rgba(0, 0, 38, 0.838);
+            margin: 5% auto 15% auto;
+            /* 5% from the top, 15% from the bottom and centered */
+            border: 1px solid #888;
+            width: 80%;
+            /* Could be more or less, depending on screen size */
+        }
+        /* The Close Button (x) */
+        
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 0;
+            color: #8753ff;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: red;
+            cursor: pointer;
+        }
+        /* Add Zoom Animation */
+        
+        .animate {
+            -webkit-animation: animatezoom 0.6s;
+            animation: animatezoom 0.6s
+        }
+        
+        @-webkit-keyframes animatezoom {
+            from {
+                -webkit-transform: scale(0)
+            }
+            to {
+                -webkit-transform: scale(1)
+            }
+        }
+        
+        @keyframes animatezoom {
+            from {
+                transform: scale(0)
+            }
+            to {
+                transform: scale(1)
+            }
+        }
+        /* Change styles for span and cancel button on extra small screens */
+        
+        span.psw {
+            display: block;
+            float: none;
+        }
+        
+        .cancelbtn {
+            width: 100%;
+        }
+        
+        .info {
+            background-color: rgb(197, 184, 184);
+            color: black;
+            text-shadow: 2px 2px 5px white;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            display: flex;
+            float: right;
+            width: 100%;
+            position: relative;
+            bottom: 180px;
+        }
+        
+        .info1 {
+            margin: 8px;
+            padding: 10px;
+            background-color: rgb(160, 149, 149);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <div class="card py-3 px-2">
+
+            <div class="about">
+                <div class="d-flex flex-row align-items-center">
+                    <img src="https://img.icons8.com/fluent/96/000000/user-male-circle.png" width="40" />
+                    <div class="d-flex flex-column ml-2">
+                        <span id="username-display"></span>
+                        <small class="text-muted seller">miner</small>
+                        <div class="time" id="countdown">
+                            <span style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"> 01 </span><span> 00 </span> <span>00</span>
+
+                        </div>
+
+                        <div id="level" class="level">Level: 0</div>
+
+
+                    </div>
+                </div>
+
+
+                <hr>
+
+                <div class="d-flex justify-content-between align-items-center p-2 text-white">
+                    <h2 id="balance" style="color: #ccc; font-family: Georgia, 'Times New Roman', Times, serif;">0 </h2> <span class="golden-text" style="color: #FFD700; margin-right: 300px;"><sub>Vc</sub></span>
+                </div>
+
+                <hr>
+
+                <div class="mt-5 p-2">
+                    <button class="btn btn-primary btn-block cart">Connect Wallet-></button>
+                    <button class="btn btn-outline-primary btn-block cart"><i class="fa fa-eye text-primary"></i> Inspect in Game</button>
+                </div>
+            </div>
+
+            <p id="tap-count" class="left">Taps Left: 100</p>
+
+            <img src="valcoin3-removebg-preview.png" alt="Tap me!" id="tap-image" style="width: 250px; height: 250px;" class="tap">
+            <img src="valcoin.png" alt="" class="back">
+
+            <!-- Upgrade and Bot buttons -->
+            <button id="upgrade-button" class="upgrade" onclick="document.getElementById('id01').style.display='block'">Upgrade</button>
+            <button class="upgrade1" onclick="document.getElementById('id02').style.display='block'">Activate Bot</button>
+            <div id="id01" class="modalup">
+
+                <form class="modalup-content animate" action="" method="post">
+                    <div class="imgcontainerup">
+                        <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <img src="level1-removebg-preview.png" alt="Avatar" class="avatar" id="level">
+                    </div>
+
+                    <div class="containerup">
+
+                        <p style="text-align: center; color: rgb(181, 175, 175); text-shadow: 1px 1px 1px black;">Upgrade level with 20,000 Valcoins</p>
+                        <button class="buttonup">Upgrade to level 1</button>
+
+                    </div>
+
+                    <div class="containerup" style="background-color:#f1f1f1">
+                        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn" class="buttonup">Later</button>
+
+                    </div>
+                </form>
+            </div>
+
+            <div id="id02" class="modalup">
+
+                <form class="modalup-content animate" action="" method="post">
+                    <div class="imgcontainerup">
+                        <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <img src="bot-removebg-preview.png" alt="Avatar" class="avatar">
+                    </div>
+
+                    <div class="containerup">
+
+                        <p style="text-align: center; color: rgb(181, 175, 175); text-shadow: 1px 1px 1px black;">Activate Bot with 50,000 Valcoins</p>
+                        <button id="bot-button" class="buttonup" style="margin-left: 45px;" disabled>Activate Bot</button>
+
+
+                    </div>
+
+                    <div class="containerup" style="background-color:#f1f1f1">
+                        <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn" class="buttonup">Later</button>
+
+                    </div>
+                </form>
+            </div>
+
+
+
+
+            <div class="info">
+                <a href="tap.html">
+                    <div class="info1"> Tap <img src="tap.png" alt="" style="width: 30px; height: 30px;"></div>
+                </a>
+                <a href="task.html">
+                    <div class="info1"> Task
+                        <img src="task.png" alt="" style="width: 30px; height: 30px;">
+                    </div>
+                </a>
+                <div class="info1"> Gang <img src="earn.png" alt="" style="width: 30px; height: 30px;"></div>
+                <a href="mine.html">
+                    <div class="info1">Mine
+                        <img src="mine.png" alt="" style="width: 30px; height: 30px;">
+                    </div>
+                </a>
+                <div class="info1">Frends <img src="invite.png" alt="" style="width: 30px; height: 30px;"></div>
+            </div>
+
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const username = localStorage.getItem('username');
+                    if (username) {
+                        document.getElementById('username-display').textContent = username;
+                    } else {
+                        window.location.href = 'indec.html';
+                    }
+                });
+
+                let balance = 0;
+                let tapsLeft = 100;
+                let tapIncrement = 3;
+                let upgradeCost = 2000;
+                let botCost = 10000;
+                let upgradeLevel = 0;
+                let botEnabled = false;
+                let countdownInterval;
+                let botInterval;
+
+                const upgrades = [{
+                    cost: 2000,
+                    tapIncrement: 7,
+                    tapsAdded: 500
+                }, {
+                    cost: 5000,
+                    tapIncrement: 10,
+                    tapsAdded: 2000
+                }, {
+                    cost: 10000,
+                    tapIncrement: 12,
+                    tapsAdded: 4000
+                }, {
+                    cost: 50000,
+                    tapIncrement: 15,
+                    tapsAdded: 2000
+                }, {
+                    cost: 100000,
+                    tapIncrement: 18,
+                    tapsAdded: 2000
+                }, {
+                    cost: 20000,
+                    tapIncrement: 20,
+                    tapsAdded: 2000
+
+                }, {
+                    cost: 500000,
+                    tapIncrement: 25,
+                    tapsAdded: 2000
+
+                }];
+
+                document.getElementById('tap-image').addEventListener('click', function() {
+                    tapAction();
+                });
+
+                document.getElementById('upgrade-button').addEventListener('click', function() {
+                    if (balance >= upgradeCost) {
+                        balance -= upgradeCost;
+                        tapsLeft += upgrades[upgradeLevel].tapsAdded;
+                        tapIncrement = upgrades[upgradeLevel].tapIncrement;
+
+                        // Update the upgrade level and cost if possible
+                        upgradeLevel++;
+                        document.getElementById('level').textContent = `Level: ${upgradeLevel}`;
+
+                        if (upgradeLevel < upgrades.length) {
+                            upgradeCost = upgrades[upgradeLevel].cost;
+                            this.textContent = `Upgrade to Level ${upgradeLevel + 1} for ${upgradeCost} coins`;
+                        } else {
+                            this.disabled = true; // Disable the button if no more upgrades are available
+                            this.textContent = 'No more upgrades available';
+                        }
+
+                        // Update the balance, taps left
+                        document.getElementById('balance').textContent = `${balance}`;
+                        document.getElementById('tap-count').textContent = `Taps left: ${tapsLeft}`;
+
+                        // Disable upgrade button if balance is insufficient
+                        if (balance < upgradeCost) {
+                            this.disabled = true;
+                        }
+
+                        // Check if bot can be enabled
+                        if (balance >= botCost) {
+                            document.getElementById('bot-button').disabled = false;
+                        }
+                    }
+                });
+
+                document.getElementById('bot-button').addEventListener('click', function() {
+                    if (balance >= botCost) {
+                        balance -= botCost;
+                        botEnabled = true;
+                        this.disabled = true;
+                        this.textContent = 'Tapping Bot Activated';
+
+                        // Start bot tapping interval
+                        botInterval = setInterval(() => {
+                            botTapAction();
+                        }, 1000); // Bot taps every second
+
+                        // Update the balance
+                        document.getElementById('balance').textContent = `${balance} `;
+                    }
+                });
+
+                function tapAction() {
+                    if (tapsLeft > 0) {
+                        performTap();
+                        tapsLeft--;
+
+                        // Update the taps left display
+                        document.getElementById('tap-count').textContent = `Taps left: ${tapsLeft}`;
+
+                        // Check if taps are exhausted
+                        if (tapsLeft === 0) {
+                            startCountdown();
+                        }
+                    }
+                }
+
+                function botTapAction() {
+                    performTap();
+                }
+
+                function performTap() {
+                    // Play tapping sound
+                    // document.getElementById('tap-sound').play();
+
+                    // Add the shake animation class
+                    document.getElementById('tap-image').classList.add('shake');
+
+                    // Remove the shake class after animation ends
+                    document.getElementById('tap-image').addEventListener('animationend', () => {
+                        document.getElementById('tap-image').classList.remove('shake');
+                    }, {
+                        once: true
+                    });
+
+                    // Increment the balance
+                    balance += tapIncrement;
+
+                    // Update the balance display
+                    document.getElementById('balance').textContent = `${balance} `;
+
+                    // Create and animate coins
+                    for (let i = 0; i < 10; i++) {
+                        createCoin();
+                    }
+
+                    // Display +tapIncrement animation
+                    displayPlusTapIncrement();
+
+                    // Enable upgrade button if balance is sufficient
+                    if (balance >= upgradeCost) {
+                        document.getElementById('upgrade-button').disabled = false;
+                    }
+
+                    // Enable bot button if balance is sufficient and bot is not yet bought
+                    if (balance >= botCost && !botEnabled) {
+                        document.getElementById('bot-button').disabled = false;
+                    }
+                }
+
+                function createCoin() {
+                    const coin = document.createElement('div');
+                    coin.classList.add('coin');
+                    document.body.appendChild(coin);
+
+                    // Random position and animation
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    coin.style.left = `${x}px`;
+                    coin.style.top = `${y}px`;
+
+                    // Remove coin after animation
+                    setTimeout(() => {
+                        coin.remove();
+                    }, 1000);
+                }
+
+                function displayPlusTapIncrement() {
+                    const plusIncrement = document.createElement('div');
+                    plusIncrement.classList.add('plus-ten');
+                    plusIncrement.textContent = `+${tapIncrement}`;
+                    const imgRect = document.getElementById('tap-image').getBoundingClientRect();
+                    plusIncrement.style.left = `${imgRect.left + imgRect.width / 2}px`;
+                    plusIncrement.style.top = `${imgRect.top}px`;
+                    document.body.appendChild(plusIncrement);
+
+                    // Remove +tapIncrement after animation
+                    setTimeout(() => {
+                        plusIncrement.remove();
+                    }, 1000);
+                }
+
+                function startCountdown() {
+                    const countdownElement = document.getElementById('countdown');
+                    countdownElement.style.display = 'block';
+                    let timeLeft = 3600;
+
+                    countdownInterval = setInterval(() => {
+                        timeLeft--;
+                        const hours = Math.floor(timeLeft / 3600);
+                        const minutes = Math.floor((timeLeft % 3600) / 60);
+                        const seconds = timeLeft % 60;
+
+                        countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                        if (timeLeft <= 0) {
+                            clearInterval(countdownInterval);
+                            tapsLeft = 100;
+                            document.getElementById('tap-count').textContent = `Taps left: ${tapsLeft}`;
+                            countdownElement.style.display = 'none';
+
+                            // Restart the bot tapping if bot is enabled
+                            if (botEnabled) {
+                                botInterval = setInterval(() => {
+                                    tapAction();
+                                }, 1000); // Bot taps every second
+                            }
+                        }
+                    }, 1000);
+                }
+
+
+
+
+                const balanceElement = document.getElementById('balance');
+                const minedCoinsElement = document.getElementById('minedCoins');
+                const startButton = document.getElementById('startButton');
+                const stopButton = document.getElementById('stopButton');
+                const statusElement = document.getElementById('status');
+                const countdownElement = document.getElementById('countdown');
+                const transferButton = document.getElementById('transferButton');
+                const modal = document.getElementById('modal');
+                const closeModal = document.querySelector('.close');
+                const claimButton = document.getElementById('claimButton');
+
+
+                const refreshButton = document.getElementById('refreshButton');
+
+                function updateBalance() {
+                    const storedBalance = localStorage.getItem('balance');
+                    if (storedBalance !== null) {
+                        balanceElement.textContent = storedBalance;
+                    } else {
+                        balanceElement.textContent = '0';
+                    }
+                }
+
+                refreshButton.addEventListener('click', updateBalance);
+
+                // Update balance on page load
+                updateBalance();
+            </script>
+</body>
+
+</html>

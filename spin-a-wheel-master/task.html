@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @media (max-width: 430px) {
+             :root {
+                --size: 50vh;
+                --s: calc(var(--size) / 6);
+                --bor: calc(var(--size) / 30);
+                --boxShadow: calc(var(--size) / 12);
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                background-color: #000;
+                overflow: hidden;
+            }
+            .circle {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: var(--size);
+                height: var(--size);
+                filter: url(#wavy) blur(1px);
+            }
+            .circle:before,
+            .circle:after {
+                content: "";
+                position: absolute;
+                top: var(--s);
+                left: var(--s);
+                right: var(--s);
+                bottom: var(--s);
+                border-radius: 50%;
+                border: var(--bor) solid #fff;
+            }
+            .circle:before {
+                box-shadow: 0 0 var(--boxShadow) #0f0, inset 0 0 var(--boxShadow) #0f0;
+                -webkit-box-reflect: below 10px linear-gradient(transparent, transparent, #0002);
+                animation: move 5s linear infinite;
+            }
+            .circle:after {
+                box-shadow: 0 0 calc(var(--bor)/2) #fff, inset 0 0 var(--bor) #fff;
+            }
+            @keyframes move {
+                0% {
+                    box-shadow: 0 0 var(--boxShadow) #0f0, inset 0 0 var(--boxShadow) #0f0;
+                    filter: hue-rotate(0deg);
+                }
+                20% {
+                    box-shadow: 0 0 60px #0f0, inset 0 0 60px #0f0;
+                }
+                40% {
+                    box-shadow: 0 0 40px #0f0, inset 0 0 40px #0f0;
+                }
+                60% {
+                    box-shadow: 0 0 80px #0f0, inset 0 0 80px #0f0;
+                }
+                80% {
+                    box-shadow: 0 0 100px #0f0, inset 0 0 100px #0f0;
+                }
+                100% {
+                    box-shadow: 0 0 var(--boxShadow) #0f0, inset 0 0 var(--boxShadow) #0f0;
+                    filter: hue-rotate(360deg);
+                }
+            }
+            svg {
+                width: 0;
+                height: 0;
+            }
+            table {
+                background-color: beige;
+            }
+            tr {
+                border-color: 2px solid black;
+                border-collapse: collapse;
+            }
+            td {
+                border-color: 2px solid black;
+            }
+            .task1 {
+                position: relative;
+                top: 10px;
+                font-size: 20px;
+                font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+                border-radius: 0 30px 0 0;
+                border: 2px solid goldenrod;
+                width: 100%;
+                height: 35px;
+            }
+            .task_a {
+                text-decoration: none;
+                border: 2px solid goldenrod;
+                border-radius: 25px;
+                color: white;
+            }
+            .claim {
+                text-decoration: none;
+                width: 100px;
+                color: black;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 20px;
+                background-color: white;
+                box-shadow: 2px 2px 3px;
+                border-radius: 10px;
+            }
+            .taskh {
+                color: white;
+                font-size: 20px;
+                font-family: 'Orbitron', sans-serif;
+                letter-spacing: 1px;
+                text-align: center;
+                position: relative;
+                left: 150px;
+                top: 5px;
+                border-top: 3px solid white;
+                border-radius: 20px;
+                width: 100px;
+            }
+            .back {
+                color: #000;
+                background-color: rgb(255, 162, 0);
+                width: 80px;
+                color: white;
+                font-size: 25px;
+                border-radius: 50px 0 0 50px;
+            }
+            .backa {
+                position: relative;
+                left: 5px;
+                text-align: right;
+                text-decoration: none;
+            }
+            .alldiv {
+                background-color: rgba(3, 3, 73, 0.724);
+            }
+        }
+        
+        .info {
+            background-color: rgb(197, 184, 184);
+            color: black;
+            text-shadow: 2px 2px 5px white;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            display: flex;
+            float: right;
+            position: relative;
+            top: 15px;
+            width: 100%;
+        }
+        
+        .info1 {
+            margin: 8px;
+            padding: 10px;
+            background-color: rgb(160, 149, 149);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="circle"></div>
+    <filter id="wavy">
+        <feTurbulence x="0" y="0" baseFrequency="0.009" numOctaves="5" speed="2">
+            <animate attributeName="baseFrequency" dur="60s" values="0.02; 0.005; 0.02" repeatCount="indefinite">
+
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" scale="30">
+
+            </feTurbulence>
+            <a href="tap.html" class="backa">
+                <p class="back">back</p>
+            </a>
+            <p class="taskh">Task</p>
+
+            <div class="alldiv">
+                <div class="task1"> <a href="#" class="task_a">Follow Valcoin on twitter</a> <span style="font-size: 20px; background-color: #fff; margin-left: 8px">Get 20,000</span>
+                    <a href="#" class="claim">claim</a></div>
+                <br>
+                <br>
+                <div class="task1"> <a href="#" class="task_a">Follow CEO on twitter</a> <span style="font-size: 20px; background-color: #fff; margin-left: 8px">Get 20,000</span>
+                    <a href="#" class="claim">claim</a></div>
+                <br>
+                <br>
+    </filter>
+    <div class="task1"> <a href="#" class="task_a">Follow Binance on twitter</a> <span style="font-size: 20px; background-color: #fff; margin-left: 8px">Get 20,000</span>
+        <a href="#" class="claim">claim</a></div>
+    <br>
+    <br>
+
+    <div class="task1"> <a href="#" class="task_a">Join Telegram channel</a> <span style="font-size: 20px; background-color: #fff; margin-left: 8px">Get 5000</span>
+        <a href="#" class="claim">claim</a></div>
+    <br>
+    <br>
+    <div class="task1"> <a href="#" class="task_a">Join telegram group</a> <span style="font-size: 20px; background-color: #fff; margin-left: 8px">Get 20,000</span>
+        <a href="#" class="claim">claim</a></div>
+    <br>
+    <br>
+    <div class="task1"> <a href="#" class="task_a">Follow Benson on twitter</a> <span style="font-size: 20px; background-color: #fff; margin-left: 8px">Get 20,000</span>
+        <a href="#" class="claim">claim</a></div>
+    <br>
+    <div class="task1"> <a href="#" class="task_a">subscribe telegram premium</a> <span style="font-size: 20px; background-color: #fff; margin-left: 8px">Get 200,000</span>
+        <a href="#" class="claim">claim</a></div>
+    <br>
+    </div>
+
+
+    <div class="info">
+        <a href="tap.html">
+            <div class="info1"> Tap <img src="tap.png" alt="" style="width: 30px; height: 30px;"></div>
+        </a>
+        <a href="task.html">
+            <div class="info1"> Task
+                <img src="task.png" alt="" style="width: 30px; height: 30px;">
+            </div>
+        </a>
+        <div class="info1"> Gang <img src="earn.png" alt="" style="width: 30px; height: 30px;"></div>
+        <a href="mine.html">
+            <div class="info1">Mine
+                <img src="mine.png" alt="" style="width: 30px; height: 30px;">
+            </div>
+        </a>
+        <div class="info1">Frends <img src="invite.png" alt="" style="width: 30px; height: 30px;"></div>
+    </div>
+</body>
+
+</html>

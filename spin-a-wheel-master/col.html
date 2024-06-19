@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        @media (max-width: 430px) {
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 600px;
+                margin: 50px auto;
+                padding: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            h1 {
+                text-align: center;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            label {
+                margin-bottom: 10px;
+            }
+            input[type="text"] {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+            button {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            #username-display {
+                text-align: center;
+                font-size: 20px;
+                margin-top: 20px;
+            }
+            .wrapper {
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+                background-color: #637dd1;
+            }
+            .card {
+                width: 100% !important;
+                background-color: #001334;
+                color: #fff;
+                position: relative;
+                bottom: 145px;
+                z-index: 1;
+                height: 350px;
+            }
+            .about small {
+                font-size: 10px;
+            }
+            hr {
+                color: #fff;
+                margin-top: 0px;
+            }
+            .steam {
+                margin-top: -5px;
+            }
+            .seller {
+                margin-top: -6px;
+                font-size: 14px;
+            }
+            .steam-price {
+                margin-right: 115px !important;
+            }
+            .margin {
+                margin-top: -6px;
+                color: #6c757d !important;
+                font-size: 13px;
+            }
+            .response div {
+                margin-right: 10px;
+            }
+            .fa-check-circle {
+                color: #1775e5;
+            }
+            .fa-thumbs-up {
+                color: #79d254;
+            }
+            .fa-thumbs-down {
+                color: #e05a59;
+            }
+            .cart {
+                height: 50px;
+            }
+        }
+        
+        .tap {
+            position: relative;
+            top: 70px;
+            left: 40px;
+        }
+        
+        .back {
+            width: 440px;
+            height: 500px;
+            position: relative;
+            bottom: 180px;
+            right: 80px;
+            z-index: -1;
+            opacity: 0.6;
+        }
+        
+        .time {
+            background-color: black;
+            position: relative;
+            bottom: 35px;
+            left: 200px;
+            color: #ccc;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        
+        .left {
+            position: relative;
+            top: 50px;
+            background-color: burlywood;
+            border-radius: 30px 0 30px 0;
+            text-align: center;
+            border: 3px solid #104fbc;
+            color: #001334;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 20px;
+            font-weight: 400px;
+            width: 200px;
+            left: 150px;
+        }
+        
+        .coin {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: gold;
+            border-radius: 50%;
+            animation: drop 1s ease-in-out forwards;
+        }
+        
+        @keyframes drop {
+            0% {
+                transform: translateY(-50px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+        }
+        
+        .plus-ten {
+            position: absolute;
+            color: rgb(2, 249, 2);
+            font-size: 24px;
+            animation: rise 1s ease-in-out forwards;
+        }
+        
+        @keyframes rise {
+            0% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+        }
+        
+        .golden-text {
+            color: #FFD700;
+        }
+        
+        #tap-image {
+            width: 200px;
+            cursor: pointer;
+            transition: transform 0.1s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+            animation-iteration-count: 1;
+        }
+        
+        @keyframes shake {
+            0% {
+                transform: translate(1px, 1px) rotate(0deg);
+            }
+            10% {
+                transform: translate(-1px, -2px) rotate(-1deg);
+            }
+            20% {
+                transform: translate(-3px, 0px) rotate(1deg);
+            }
+            30% {
+                transform: translate(3px, 2px) rotate(0deg);
+            }
+            40% {
+                transform: translate(1px, -1px) rotate(1deg);
+            }
+            50% {
+                transform: translate(-1px, 2px) rotate(-1deg);
+            }
+            60% {
+                transform: translate(-3px, 1px) rotate(0deg);
+            }
+            70% {
+                transform: translate(3px, 1px) rotate(-1deg);
+            }
+            80% {
+                transform: translate(-1px, -1px) rotate(1deg);
+            }
+            90% {
+                transform: translate(1px, 2px) rotate(0deg);
+            }
+            100% {
+                transform: translate(1px, -2px) rotate(-1deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <div class="card py-3 px-2">
+
+            <div class="about">
+                <div class="d-flex flex-row align-items-center">
+                    <img src="https://img.icons8.com/fluent/96/000000/user-male-circle.png" width="40" />
+                    <div class="d-flex flex-column ml-2">
+                        <span id="username-display"></span>
+                        <small class="text-muted seller">miner</small>
+                        <div class="time" id="countdown">
+                            <span style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"> 01 </span><span> 00 </span> <span>00</span>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="d-flex justify-content-between align-items-center p-2 text-white">
+                    <h2 id="balance" style="color: #ccc; font-family: Georgia, 'Times New Roman', Times, serif;">0 </h2> <span class="golden-text" style="color: #FFD700; margin-right: 300px;"><sub>Vc</sub></span>
+                </div>
+
+                <hr>
+
+                <div class="mt-5 p-2">
+                    <button class="btn btn-primary btn-block cart">Connect Wallet-></button>
+                    <button class="btn btn-outline-primary btn-block cart"><i class="fa fa-eye text-primary"></i> Inspect in Game</button>
+                </div>
+            </div>
+
+            <p id="tap-count" class="left">Taps Left: 100</p>
+
+            <img src="valcoin3-removebg-preview.png" alt="Tap me!" id="tap-image" style="width: 250px; height: 250px;" class="tap">
+            <img src="valcoin.png" alt="" class="back">
+
+            <!-- Upgrade and Bot buttons -->
+            <button id="upgrade-button">Upgrade</button>
+            <button id="bot-toggle-button">Toggle Bot</button>
+            <button id="stop-bot-button">Stop Bot</button>
+
+            <p id="tap-status"></p>
+
+        </div>
+    </div>
+
+    <script>
+        var balance = 0;
+        var tapsPerSecond = 1;
+        var cooldown = 60;
+        var isBotActive = false;
+        var botInterval;
+        var botCooldownInterval;
+        var botEnabled = false;
+
+        $('#tap-image').on('click', function() {
+            balance += 10;
+            updateDisplay();
+        });
+
+        function updateDisplay() {
+            $('#balance').text(balance);
+        }
+
+        $('#bot-toggle-button').on('click', function() {
+            botEnabled = !botEnabled;
+            if (botEnabled && !isBotActive) {
+                startBot();
+            }
+        });
+
+        function startBot() {
+            if (!isBotActive) {
+                isBotActive = true;
+                $('#tap-status').text('Bot is active');
+                botInterval = setInterval(function() {
+                    balance += 10;
+                    updateDisplay();
+                }, 1000 / tapsPerSecond);
+            }
+        }
+
+        $('#stop-bot-button').on('click', function() {
+            stopBot();
+            botEnabled = false;
+            $('#tap-status').text('Bot is stopped');
+        });
+
+        function stopBot() {
+            isBotActive = false;
+            clearInterval(botInterval);
+            $('#tap-status').text('Bot is on cooldown');
+            startCooldown();
+        }
+
+        function startCooldown() {
+            var remainingTime = cooldown;
+            botCooldownInterval = setInterval(function() {
+                remainingTime -= 1;
+                $('#tap-status').text('Bot cooldown: ' + remainingTime + ' seconds');
+                if (remainingTime <= 0) {
+                    clearInterval(botCooldownInterval);
+                    $('#tap-status').text('Bot is ready');
+                    if (botEnabled) {
+                        startBot();
+                    }
+                }
+            }, 1000);
+        }
+
+        $('#upgrade-button').on('click', function() {
+            tapsPerSecond += 1;
+            if (isBotActive) {
+                clearInterval(botInterval);
+                startBot();
+            }
+        });
+    </script>
+</body>
+
+</html>

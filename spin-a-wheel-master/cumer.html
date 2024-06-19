@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        label {
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        #username-display {
+            text-align: center;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>User Registration</h1>
+        <form id="registration-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <input type="hidden" id="referral-link" name="referral-link" value="">
+            <button type="submit">Register</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registrationForm = document.getElementById('registration-form');
+
+            // Check if the user has already registered a username
+            const storedUsername = localStorage.getItem('username');
+            if (storedUsername) {
+                redirectToDashboard();
+            }
+
+            // Check if there's a referral link in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const referralLink = urlParams.get('ref');
+            if (referralLink) {
+                document.getElementById('referral-link').value = referralLink;
+            }
+
+            registrationForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const username = document.getElementById('username').value;
+                const referralLink = document.getElementById('referral-link').value;
+
+                if (username) {
+                    localStorage.setItem('username', username);
+                    if (referralLink) {
+                        // Reward both users
+                        rewardUser(referralLink);
+                        rewardUser(username);
+                    }
+                    redirectToDashboard();
+                } else {
+                    alert("Please enter a username.");
+                }
+            });
+        });
+
+        function redirectToDashboard() {
+            window.location.href = "cumer2.html";
+        }
+
+        function rewardUser(username) {
+            let balance = 0;
+            const storedBalance = localStorage.getItem(`${username}-balance`);
+            if (storedBalance) {
+                balance = parseInt(storedBalance);
+            }
+            balance += 10000;
+            localStorage.setItem(`${username}-balance`, balance);
+        }
+    </script>
+</body>
+
+</html>
